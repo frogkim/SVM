@@ -5,14 +5,15 @@ from sklearn.svm import SVC
 
 # TODO: remove magic numbers
 
-
 X = [
        [-2, 4], [-2, 2], [-4, 1],
        [ 1,-1], [ 2,-2], [ 1,-3]
     ]
-X = np.array(X)
 y = [ 1, 1, 1, 0, 0, 0]
 
+# numpy style list is used in library
+X = np.array(X)
+y = np.array(y)
 z = np.zeros(6)
 
 clf = SVC(kernel="linear", C=1000)
@@ -33,38 +34,36 @@ for i in range(6):
 # try to find minimum value in each classes
 tmp = z[:3]
 tmp = abs(tmp)
-sv_1 = tmp.argmin()
+index_1 = tmp.argmin()
 
 tmp = z[3:6]
 tmp = abs(tmp)
-sv_2 = 3 + tmp.argmin()
+index_2 = 3 + tmp.argmin()
 
-print(sv_1)
-print(sv_2)
+print(index_1)
+print(index_2)
 
 # find intercept in each lines
-x = X[sv_1]
+x = X[index_1] # select support vector
 p = v[0] * x[0] + v[1] * x[1]
-q = p + b
-# q = 1.333333333333
+q = - (p + b)
+
 # y = -a/b x - c/b
-print("k : ", -v[0]/v[1], " c : ", -q/v[1])
+k = -v[0]/v[1]
+c = -q   /v[1]
+print("k : ", k, " c : ", c)
 
-
-x = X[sv_2]
+x = X[index_2] # select support vector
 p = v[0] * x[0] + v[1] * x[1]
-q = p + b
-# q = -1.66666666666
+q = - (p + b)
+
 # y = -a/b x - c/b
-print("k : ", -v[0]/v[1], " c : ", -q/v[1])
-
-
-
+k = -v[0]/v[1]
+c = -q   /v[1]
+print("k : ", k, " c : ", c)
 
 
 ## visualization
-
-
 #plt.scatter(X[:, 0], X[:, 1], c=y, s=4, cmap=plt.cm.Paired)
 plt.scatter(X[:, 0], X[:, 1], cmap=plt.cm.Paired)
 
